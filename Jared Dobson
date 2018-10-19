@@ -1,0 +1,17 @@
+--=====================================================
+-- Author: Jared Dobson
+-- Date: 12/22/2010
+-- Description: Shows Execution Plan for a given spid.
+--=====================================================
+CREATE PROCEDURE sp_queryplan ( @SessionID INT )
+AS
+BEGIN
+SELECT
+[DEQP].[query_plan],
+[DER].[plan_handle]
+FROM
+[sys].[dm_exec_requests] AS [DER]
+CROSS APPLY [sys].[dm_exec_query_plan]([DER].[plan_handle]) AS [DEQP]
+WHERE
+[DER].[session_ID] = @SessionID
+END
